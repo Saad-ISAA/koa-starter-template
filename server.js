@@ -2,10 +2,14 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser')();
 const compress = require('koa-compress')();
 const cors = require('@koa/cors')(/* Add your cors option */);
-const helmet = require('koa-helmet')(/* Add your security option */);
 const logger = require('koa-logger')();
+// const ip = require('koa-ip');
 
-const errorHandler = require('./middleware/error.middleware');
+const {
+  errors: errorHandler,
+  security: securityHandler,
+  authenticate: authHandler,
+} = require('./middleware');
 const applyApiMiddleware = require('./api');
 const { isDevelopment } = require('./config');
 
@@ -23,10 +27,12 @@ if (isDevelopment) {
  */
 server
   .use(errorHandler)
-  .use(helmet)
+  .use(authHandler)
+  .use(securityHandler)
   .use(compress)
   .use(cors)
   .use(bodyParser);
+// .use(ip);
 
 /**
  * Apply to our server the api router

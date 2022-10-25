@@ -1,14 +1,14 @@
 'use strict';
 
-const controller = require('./user.controller');
+const controller = require('./task.controller');
 
 module.exports = (Router) => {
   const router = new Router({
-    prefix: `/users`,
+    prefix: `/tasks`,
   });
 
   router
-    .get('/:userId', controller.getOne)
+    .get('/:taskId', controller.getOne)
     .get('/', controller.getAll)
     .post('/', controller.createOne);
 
